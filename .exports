@@ -1,0 +1,12 @@
+#
+# Export variables
+#
+
+
+# Setup source highlight for less if present
+which src-hilite-lesspipe.sh > /dev/null
+if [ $? -eq 0 ]; then
+	# export variables for less
+	export LESSOPEN="| `which src-hilite-lesspipe.sh` %s"
+	export LESS=' -R '
+fi

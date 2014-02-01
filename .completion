@@ -1,0 +1,16 @@
+# Set git autocompletion and PS1 integration
+if [ -f /usr/local/git/contrib/completion/git-completion.bash ]; then
+  . /usr/local/git/contrib/completion/git-completion.bash
+fi
+if [ -f /usr/local/git/contrib/completion/git-prompt.sh ]; then
+    . /usr/local/git/contrib/completion/git-prompt.sh
+fi
+GIT_PS1_SHOWDIRTYSTATE=true
+
+if [ -f /opt/local/etc/bash_completion ]; then
+    . /opt/local/etc/bash_completion
+fi
+
+# Complete known hosts
+complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
+

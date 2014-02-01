@@ -1,0 +1,43 @@
+#
+# Functions 
+#
+#
+
+#
+# Setup virtual env
+
+VIRTUALENVDIR=$HOME/.virtualenv.d
+
+## Activates a virtual environment
+function workon() {
+    if [ $# -eq 0 ]; then
+	    echo "Usage: workon <env>"
+	    echo "Activate virtual environment in ~/.virtualenv.d/<env>"
+	    return 1
+    fi
+    local activate=${VIRTUALENVDIR}/$1/bin/activate
+    if [ -d "${VIRTUALENVDIR}/$1" ]; then
+	if [ -f "${activate}" ]; then
+	    echo "Activating $1"
+	    . ${activate}
+	else
+	    echo "${VIRTUALENVDIR}/$1 Doesn't seem to be a valid virtualenv"
+	    return 1
+	fi
+    else
+	echo "virtualenv '$1' was not found in ${VIRTUALENVDIR}"
+	return 2
+    fi
+}
+
+### Setup auto completion for 'workon'
+function _workon() {
+    COMPREPLY=()
+    local opts cur
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    opts="`ls ${VIRTUALENVDIR}`"
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    return 0
+}
+
+complete -F _workon workon
